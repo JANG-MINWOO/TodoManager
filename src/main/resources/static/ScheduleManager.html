@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스케줄 관리자</title>
+    <style>
+        /* 기본 스타일 추가 */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>스케줄 관리</h1>
+
+    <!-- 스케줄 검색 -->
+    <input type="text" id="searchName" placeholder="작성자 이름으로 검색">
+    <button onclick="searchSchedule()">검색</button>
+
+    <!-- 스케줄 결과 표시 -->
+    <div id="scheduleResult"></div>
+
+    <!-- 새로운 스케줄 추가 -->
+    <input type="text" id="author" placeholder="작성자 이름">
+    <input type="text" id="task" placeholder="할 일">
+    <input type="password" id="password" placeholder="비밀번호">
+    <button onclick="createSchedule()">스케줄 추가</button>
+
+    <!-- 스케줄 수정 -->
+    <input type="text" id="editId" placeholder="수정할 스케줄 ID">
+    <input type="text" id="editAuthor" placeholder="새 작성자 이름">
+    <input type="text" id="editTask" placeholder="새 할 일">
+    <button onclick="updateSchedule()">스케줄 수정</button>
+
+    <!-- 스케줄 삭제 -->
+    <input type="text" id="deleteId" placeholder="삭제할 스케줄 ID">
+    <input type="password" id="deletePassword" placeholder="비밀번호">
+    <button onclick="deleteSchedule()">스케줄 삭제</button>
+</div>
+
+<script>
+    // 스케줄 검색 함수
+    function searchSchedule() {
+        const name = document.getElementById('searchName').value;
+        fetch(`/schedules?name=${name}`)
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('scheduleResult');
+                resultDiv.innerHTML = JSON.stringify(data); // 데이터를 화면에 표시
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // 스케줄 추가 함수
+    function createSchedule() {
+        const author = document.getElementById('author').value;
+        const task = document.getElementById('task').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/schedules', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: author, task: task, password: password })
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('스케줄이 추가되었습니다!');
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // 스케줄 수정 함수
+    function updateSchedule() {
+        const id = document.getElementById('editId').value;
+        const newAuthor = document.getElementById('editAuthor').value;
+        const newTask = document.getElementById('editTask').value;
+
+        fetch(`/schedules/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: newAuthor, task: newTask })
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('스케줄이 수정되었습니다!');
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // 스케줄 삭제 함수
+    function deleteSchedule() {
+        const id = document.getElementById('deleteId').value;
+        const password = document.getElementById('deletePassword').value;
+
+        fetch(`/schedules/${id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: password })
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('스케줄이 삭제되었습니다!');
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>
