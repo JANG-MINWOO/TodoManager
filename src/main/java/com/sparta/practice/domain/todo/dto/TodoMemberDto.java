@@ -14,4 +14,11 @@ public class TodoMemberDto {
     private String description;
     private String createdAt;
     private String updatedAt;
+
+    public TodoMemberDto(Long id, Long memberId, String title, String description) {
+        this.id = id;
+        this.memberId = memberId;
+        this.title = title;
+        this.description = description;
+    }
 }

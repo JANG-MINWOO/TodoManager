@@ -72,4 +72,11 @@ public class Todo {
                 this.updatedAt
         );
     }
+
+    public void update(TodoRequestDto requestDto) {
+        this.title=requestDto.getTitle();
+        this.description=requestDto.getDescription();
+        this.updatedAt=requestDto.getUpdatedAt();
+        this.memberId=requestDto.getMemberId();
+    }
 }
