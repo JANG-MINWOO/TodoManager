@@ -1,10 +1,10 @@
-package com.sparta.schedulemanagerapp;
+package com.sparta.practice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ScheduleManagerAppApplicationTests {
+class TodoTests {
 
     @Test
     void contextLoads() {
