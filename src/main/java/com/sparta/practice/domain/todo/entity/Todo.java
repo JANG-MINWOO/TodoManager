@@ -13,11 +13,12 @@ import lombok.Setter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 @Entity //JPA 가 관리할 수 있는 Entity 클래스 지정
 @Getter
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
-public class Todo {
+public class Todo extends TimeStamped {
     @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본 키 설정
@@ -27,8 +28,7 @@ public class Todo {
     private String title;
     private String password;
     private String description;
-    private String createdAt;
-    private String updatedAt;
+
 
     public static Todo from(TodoRequestDto requestDto){
         Todo todo = new Todo();
@@ -36,21 +36,23 @@ public class Todo {
         return todo;
     }
 
-    public static Todo from(ResultSet rs) throws SQLException {
-        Todo todo = new Todo();
-        todo.init(rs);
-        return todo;
-    }
-
-    private void init(ResultSet rs) throws SQLException {
-        this.id=rs.getLong("id");
-        this.memberId=rs.getLong("member_id");
-        this.title=rs.getString("title");
-        this.password=rs.getString("password");
-        this.description=rs.getString("description");
-        this.createdAt=rs.getString("created_at");
-        this.updatedAt=rs.getString("updated_at");
-    }
+//    public static Todo from(ResultSet rs) throws SQLException {
+//        Todo todo = new Todo();
+//        todo.init(rs);
+//        return todo;
+//    }
+//
+//    private void init(ResultSet rs) throws SQLException {
+//        this.id=rs.getLong("id");
+//        this.memberId=rs.getLong("member_id");
+//        this.title=rs.getString("title");
+//        this.password=rs.getString("password");
+//        this.description=rs.getString("description");
+//        Timestamp createdAtTimestamp = rs.getTimestamp("created_at");
+//        this.createdAt = createdAtTimestamp != null ? createdAtTimestamp.toLocalDateTime() : null;
+//        Timestamp updatedAtTimestamp = rs.getTimestamp("updated_at");
+//        this.updatedAt = updatedAtTimestamp != null ? updatedAtTimestamp.toLocalDateTime() : null;
+//    }
 
 
     private void init(TodoRequestDto requestDto){
