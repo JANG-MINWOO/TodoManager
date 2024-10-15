@@ -48,7 +48,7 @@ public class TodoService {
     @Transactional
     public void updateTodo(Long todoId, TodoRequestDto requestDto) {
         Todo todo = findTodo(todoId); //아래의 일정 존재유무 메서드
-        Member member = memberRepository.findById(todo.getMemberId());
+        Member member = findMember(todo);
 
         if(!Objects.equals(member.getId(),requestDto.getMemberId())){
             throw new IllegalArgumentException("작성자만 수정 가능합니다.");
@@ -59,7 +59,7 @@ public class TodoService {
     @Transactional
     public void deleteTodo(Long todoId, TodoRequestDto requestDto) {
         Todo todo = findTodo(todoId);
-        Member member = memberRepository.findById(todo.getMemberId());
+        Member member = findMember(todo);
 
         if(!Objects.equals(member.getId(),requestDto.getMemberId())){
             throw new IllegalArgumentException("작성자만 삭제 가능합니다.");
@@ -69,5 +69,10 @@ public class TodoService {
 
     private Todo findTodo(Long todoId) {
         return todoRepository.findById(todoId).orElseThrow(()-> new IllegalArgumentException("선택한 일정은 존재하지 않습니다."));
+    }
+
+    private Member findMember(Todo todo) {
+        return memberRepository.findById(todo.getMemberId())
+                .orElseThrow(()-> new IllegalArgumentException("작성자를 찾을 수 없습니다."));
     }
 }
