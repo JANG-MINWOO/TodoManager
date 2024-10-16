@@ -1,6 +1,7 @@
 package com.sparta.practice.domain.todo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sparta.practice.domain.comment.entity.Comment;
 import com.sparta.practice.domain.member.entity.Member;
 import com.sparta.practice.domain.todo.dto.TodoRequestDto;
@@ -29,13 +30,15 @@ public class Todo extends TimeStamped {
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference //역참조를 직렬화 할때 무시
     private Member member;
 
     @OneToMany(mappedBy="todo",cascade = CascadeType.ALL)
+    @JsonManagedReference //직렬화 할때 사용
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToMany(mappedBy = "sharedTodos")
+    @JsonBackReference //역참조를 직렬화 할때 무시
     private List<Member> sharedMembers = new ArrayList<>();
 
 

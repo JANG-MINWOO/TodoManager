@@ -31,7 +31,7 @@ public class Member extends TimeStamped {
     private String password;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference //직렬화 할때 사용
     private List<Todo> todos = new ArrayList<>();
 
     @ManyToMany
@@ -40,6 +40,7 @@ public class Member extends TimeStamped {
             joinColumns = @JoinColumn(name="member_id"),
             inverseJoinColumns = @JoinColumn(name = "todo_id")
     )
+    @JsonManagedReference //직렬화 할때 사용
     private List<Todo> sharedTodos = new ArrayList<>();
 
     public Member(String username, String email, String password) {
