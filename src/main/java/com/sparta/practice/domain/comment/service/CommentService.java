@@ -12,6 +12,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -31,5 +34,12 @@ public class CommentService {
         commentRepository.save(comment);
 
         return new CommentResponseDto(comment);
+    }
+
+    public List<CommentResponseDto> getCommentByTodoId(Long todoId) {
+        List<Comment> comments = commentRepository.findByTodoId(todoId);
+        return comments.stream()
+                .map(CommentResponseDto::new)
+                .collect(Collectors.toList());
     }
 }
