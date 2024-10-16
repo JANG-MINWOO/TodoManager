@@ -3,6 +3,7 @@ package com.sparta.practice.domain.comment.controller;
 import com.sparta.practice.domain.comment.dto.CommentRequestDto;
 import com.sparta.practice.domain.comment.dto.CommentResponseDto;
 import com.sparta.practice.domain.comment.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto requestDto){
+    public ResponseEntity<CommentResponseDto> createComment(@RequestBody @Valid CommentRequestDto requestDto){
         CommentResponseDto commentDto = commentService.createComment(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(commentDto);
     }
@@ -29,7 +30,7 @@ public class CommentController {
     }
 
     @PutMapping("/update/{commentId}")
-    public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto){
+    public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long commentId, @RequestBody @Valid CommentRequestDto requestDto){
         CommentResponseDto commentDto = commentService.updateComment(commentId,requestDto);
         return ResponseEntity.ok(commentDto);
     }

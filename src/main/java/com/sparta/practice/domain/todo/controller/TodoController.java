@@ -1,13 +1,12 @@
 package com.sparta.practice.domain.todo.controller;
 
-import com.sparta.practice.domain.member.dto.MemberRequestDto;
 import com.sparta.practice.domain.member.entity.Member;
 import com.sparta.practice.domain.member.service.MemberService;
 import com.sparta.practice.domain.todo.dto.TodoMemberDto;
 import com.sparta.practice.domain.todo.dto.TodoRequestDto;
 import com.sparta.practice.domain.todo.dto.TodoResponseDto;
-import com.sparta.practice.domain.todo.entity.Todo;
 import com.sparta.practice.domain.todo.service.TodoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class TodoController {
 
     //일정 생성
     @PostMapping
-    public ResponseEntity<TodoResponseDto> createTodo(@RequestBody TodoRequestDto todoRequestDto,@RequestParam Long memberId){
+    public ResponseEntity<TodoResponseDto> createTodo(@RequestBody @Valid TodoRequestDto todoRequestDto, @RequestParam Long memberId){
         Member member = memberService.findById(memberId);
         if(member == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -55,7 +54,7 @@ public class TodoController {
 
     //선택 일정 수정
     @PutMapping("/{todoId}")
-    public ResponseEntity<Void> updateTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto requestDto){
+    public ResponseEntity<Void> updateTodo(@PathVariable Long todoId, @RequestBody @Valid TodoRequestDto requestDto){
         todoService.updateTodo(todoId,requestDto);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

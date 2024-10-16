@@ -4,8 +4,8 @@ import com.sparta.practice.domain.member.dto.MemberRequestDto;
 import com.sparta.practice.domain.member.dto.MemberResponseDto;
 import com.sparta.practice.domain.member.entity.Member;
 import com.sparta.practice.domain.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +19,7 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/resister")
-    public ResponseEntity<Member> registerMember(@RequestBody MemberRequestDto requestDto) {
+    public ResponseEntity<Member> registerMember(@RequestBody @Valid MemberRequestDto requestDto) {
         Member newMember = memberService.registerMember(
                 requestDto.getUsername(),
                 requestDto.getEmail(),
@@ -30,8 +30,8 @@ public class MemberController {
 
     //회원 정보 불러오기
     @GetMapping("/loadData")
-    public ResponseEntity<Member> login(@RequestParam String username, @RequestParam String password){
-        Optional<Member> member = memberService.login(username, password);
+    public ResponseEntity<Member> login(@RequestParam Long memberId, @RequestParam String password){
+        Optional<Member> member = memberService.login(memberId, password);
         return member.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(401).build());
     }
@@ -40,7 +40,7 @@ public class MemberController {
     @PutMapping("/{memberId}")
     public ResponseEntity<MemberResponseDto> updateMember(
             @PathVariable Long memberId,
-            @RequestBody MemberRequestDto requestDto
+            @RequestBody @Valid MemberRequestDto requestDto
     ) {
         MemberResponseDto updatedMember = memberService.updateMember(memberId,requestDto);
         return ResponseEntity.ok(updatedMember);

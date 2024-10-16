@@ -29,8 +29,8 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Optional<Member> login(String username, String password) {
-        Optional<Member> member = memberRepository.findByUsername(username);
+    public Optional<Member> login(Long memberId, String password) {
+        Optional<Member> member = memberRepository.findById(memberId);
 
         if(member.isPresent()&&member.get().getPassword().equals(password)) {
             return member;

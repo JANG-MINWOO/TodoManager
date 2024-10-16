@@ -1,8 +1,6 @@
 package com.sparta.practice.domain.todo.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
