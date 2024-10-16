@@ -4,6 +4,7 @@ import com.sparta.practice.domain.comment.dto.CommentRequestDto;
 import com.sparta.practice.domain.comment.dto.CommentResponseDto;
 import com.sparta.practice.domain.comment.entity.Comment;
 import com.sparta.practice.domain.comment.repository.CommentRepository;
+import com.sparta.practice.domain.exception.UnauthorizedAccessException;
 import com.sparta.practice.domain.member.entity.Member;
 import com.sparta.practice.domain.member.repository.MemberRepository;
 import com.sparta.practice.domain.todo.entity.Todo;
@@ -12,6 +13,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.channels.AcceptPendingException;
+import java.nio.file.AccessDeniedException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,5 +45,19 @@ public class CommentService {
         return comments.stream()
                 .map(CommentResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto)  {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                ()->new EntityNotFoundException("댓글이 존재하지 않습니다.")
+        );
+
+        if(!comment.getMember().getId().equals(requestDto.getMemberId())) {
+            throw new UnauthorizedAccessException("작성자만 수정할 수 있습니다.");
+        }
+
+        comment.setContent(requestDto.getContent());
+        commentRepository.save(comment);
+        return new CommentResponseDto(comment);
     }
 }

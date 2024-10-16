@@ -28,4 +28,10 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
+    @PutMapping("/update/{commentId}")
+    public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto){
+        CommentResponseDto commentDto = commentService.updateComment(commentId,requestDto);
+        return ResponseEntity.ok(commentDto);
+    }
+
 }
