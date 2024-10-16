@@ -7,7 +7,6 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor
 public class TodoResponseDto {
     private Long id; //pk를 위해
     private Long memberId;
@@ -15,5 +14,14 @@ public class TodoResponseDto {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public TodoResponseDto(Todo todo){
+        this.id=todo.getId();
+        this.memberId = todo.getMember().getId();
+        this.title = todo.getTitle();
+        this.description = todo.getDescription();
+        this.createdAt = todo.getCreatedAt();
+        this.updatedAt = todo.getUpdatedAt();
+    }
 
 }

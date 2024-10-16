@@ -24,8 +24,8 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final MemberRepository memberRepository;
 
-    public TodoResponseDto createTodo(TodoRequestDto todoRequestDto) {
-        Todo todo = todoRepository.save(Todo.from(todoRequestDto));
+    public TodoResponseDto createTodo(TodoRequestDto requestDto, Member member) {
+        Todo todo = todoRepository.save(Todo.from(requestDto,member));
         return todo.to();
     }
 
@@ -36,7 +36,11 @@ public class TodoService {
     public List<TodoMemberDto> getTodoListWithPaging(int page, int size){
         Pageable pageable = PageRequest.of(page,size);
         return todoRepository.findAll(pageable).stream()
-                .map(todo -> new TodoMemberDto(todo.getId(),todo.getMemberId(),todo.getTitle(),todo.getDescription()))
+                .map(todo -> new TodoMemberDto(
+                        todo.getId(),
+                        todo.getMember().getId(),
+                        todo.getTitle(),
+                        todo.getDescription()))
                 .collect(Collectors.toList());
     }
 
@@ -72,7 +76,7 @@ public class TodoService {
     }
 
     private Member findMember(Todo todo) {
-        return memberRepository.findById(todo.getMemberId())
+        return memberRepository.findById(todo.getMember().getId())
                 .orElseThrow(()-> new IllegalArgumentException("작성자를 찾을 수 없습니다."));
     }
 }

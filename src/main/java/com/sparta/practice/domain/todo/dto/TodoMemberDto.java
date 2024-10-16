@@ -3,6 +3,8 @@ package com.sparta.practice.domain.todo.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 public class TodoMemberDto {
@@ -12,8 +14,8 @@ public class TodoMemberDto {
     private String username;
     private String email;
     private String description;
-    private String createdAt;
-    private String updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public TodoMemberDto(Long id, Long memberId, String title, String description) {
         this.id = id;

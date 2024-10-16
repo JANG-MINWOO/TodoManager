@@ -1,9 +1,12 @@
 package com.sparta.practice.domain.member.service;
 
+import com.sparta.practice.domain.member.dto.MemberRequestDto;
+import com.sparta.practice.domain.member.dto.MemberResponseDto;
 import com.sparta.practice.domain.member.entity.Member;
 import com.sparta.practice.domain.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -32,5 +35,22 @@ public class MemberService {
             return member;
         }
         return Optional.empty();
+    }
+
+    @Transactional
+    public MemberResponseDto updateMember(Long memberId, MemberRequestDto requestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                ()-> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+        );
+        member.update(requestDto);
+        return new MemberResponseDto(member);
+    }
+
+    @Transactional
+    public void deleteMember(Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+        );
+        memberRepository.delete(member);
     }
 }

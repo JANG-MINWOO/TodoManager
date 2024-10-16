@@ -1,8 +1,12 @@
 package com.sparta.practice.domain.todo.controller;
 
+import com.sparta.practice.domain.member.dto.MemberRequestDto;
+import com.sparta.practice.domain.member.entity.Member;
+import com.sparta.practice.domain.member.service.MemberService;
 import com.sparta.practice.domain.todo.dto.TodoMemberDto;
 import com.sparta.practice.domain.todo.dto.TodoRequestDto;
 import com.sparta.practice.domain.todo.dto.TodoResponseDto;
+import com.sparta.practice.domain.todo.entity.Todo;
 import com.sparta.practice.domain.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,22 +20,28 @@ import java.util.List;
 @RequestMapping("/api/todo")
 public class TodoController {
     private final TodoService todoService;
+    private final MemberService memberService;
 
 //    public TodoController(TodoService todoService){
 //        this.todoService=todoService;
 //    }
     //일정 생성
     @PostMapping
-    public ResponseEntity<TodoResponseDto> createTodo(@RequestBody TodoRequestDto todoRequestDto){
+    public ResponseEntity<TodoResponseDto> createTodo(@RequestBody TodoRequestDto todoRequestDto,@RequestParam Long memberId){
+        Member member = memberService.findById(memberId);
+        if(member == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(todoService.createTodo(todoRequestDto));
+                .body(todoService.createTodo(todoRequestDto, member));
     }
 
     //전체 일정 조회
     @GetMapping
     public ResponseEntity<List<TodoMemberDto>> getTodoList(
-            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size
+            @RequestParam int page, @RequestParam(defaultValue = "10") int size
     ){
         return ResponseEntity
                 .status(HttpStatus.OK)
