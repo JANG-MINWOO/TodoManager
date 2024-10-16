@@ -31,10 +31,6 @@ public class TodoService {
         return todo.to();
     }
 
-//    public List<TodoResponseDto> getTodoList() {
-//        return todoRepository.findAll().stream().map(TodoResponseDto::new).toList();
-//    }
-
     public List<TodoMemberDto> getTodoListWithPaging(int page, int size){
         Pageable pageable = PageRequest.of(page,size);
         return todoRepository.findAll(pageable).stream()
@@ -42,7 +38,11 @@ public class TodoService {
                         todo.getId(),
                         todo.getMember().getId(),
                         todo.getTitle(),
-                        todo.getDescription()))
+                        todo.getDescription(),
+                        todo.getMember().getUsername(),
+                        todo.getMember().getEmail(),
+                        todo.getCreatedAt(),
+                        todo.getUpdatedAt()))
                 .collect(Collectors.toList());
     }
 

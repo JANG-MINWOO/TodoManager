@@ -28,7 +28,7 @@ public class Todo extends TimeStamped {
     private String password;
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     @JsonBackReference //역참조를 직렬화 할때 무시
     private Member member;

@@ -42,6 +42,11 @@ public class CommentService {
 
     public List<CommentResponseDto> getCommentByTodoId(Long todoId) {
         List<Comment> comments = commentRepository.findByTodoId(todoId);
+
+        if(comments.isEmpty()) {
+            throw new EntityNotFoundException("이 일정에 대한 댓글이 존재하지 않습니다.");
+        }
+
         return comments.stream()
                 .map(CommentResponseDto::new)
                 .collect(Collectors.toList());

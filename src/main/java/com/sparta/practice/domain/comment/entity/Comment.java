@@ -21,12 +21,12 @@ public class Comment extends TimeStamped {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="todo_id",nullable = false)
     @JsonBackReference //역참조를 직렬화 할때 무시
     private Todo todo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id",nullable = false)
     @JsonBackReference //역참조를 직렬화 할때 무시
     private Member member;
