@@ -30,6 +30,10 @@ public class Member extends TimeStamped {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private MemberRoleEnum role;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonManagedReference //직렬화 할때 사용
     private List<Todo> todos = new ArrayList<>();
@@ -47,6 +51,13 @@ public class Member extends TimeStamped {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public Member(String username, String password, String email, MemberRoleEnum role) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
     }
 
     public void update(MemberRequestDto requestDto) {
