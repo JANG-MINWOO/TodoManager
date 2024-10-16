@@ -34,6 +34,14 @@ public class Member extends TimeStamped {
     @JsonManagedReference
     private List<Todo> todos = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "member_todo",
+            joinColumns = @JoinColumn(name="member_id"),
+            inverseJoinColumns = @JoinColumn(name = "todo_id")
+    )
+    private List<Todo> sharedTodos = new ArrayList<>();
+
     public Member(String username, String email, String password) {
         this.username = username;
         this.email = email;
