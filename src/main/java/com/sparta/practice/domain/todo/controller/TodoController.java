@@ -22,9 +22,6 @@ public class TodoController {
     private final TodoService todoService;
     private final MemberService memberService;
 
-//    public TodoController(TodoService todoService){
-//        this.todoService=todoService;
-//    }
     //일정 생성
     @PostMapping
     public ResponseEntity<TodoResponseDto> createTodo(@RequestBody TodoRequestDto todoRequestDto,@RequestParam Long memberId){

@@ -4,6 +4,7 @@ import com.sparta.practice.domain.member.dto.MemberRequestDto;
 import com.sparta.practice.domain.member.dto.MemberResponseDto;
 import com.sparta.practice.domain.member.entity.Member;
 import com.sparta.practice.domain.member.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +41,7 @@ public class MemberService {
     @Transactional
     public MemberResponseDto updateMember(Long memberId, MemberRequestDto requestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                ()-> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+                ()-> new EntityNotFoundException("회원을 찾을 수 없습니다.")
         );
         member.update(requestDto);
         return new MemberResponseDto(member);
@@ -49,7 +50,7 @@ public class MemberService {
     @Transactional
     public void deleteMember(Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+                () -> new EntityNotFoundException("회원을 찾을 수 없습니다.")
         );
         memberRepository.delete(member);
     }

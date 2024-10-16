@@ -1,5 +1,6 @@
 package com.sparta.practice.domain.todo.service;
 
+import com.sparta.practice.domain.exception.UnauthorizedAccessException;
 import com.sparta.practice.domain.member.entity.Member;
 import com.sparta.practice.domain.member.repository.MemberRepository;
 import com.sparta.practice.domain.todo.dto.TodoMemberDto;
@@ -7,6 +8,7 @@ import com.sparta.practice.domain.todo.dto.TodoRequestDto;
 import com.sparta.practice.domain.todo.dto.TodoResponseDto;
 import com.sparta.practice.domain.todo.entity.Todo;
 import com.sparta.practice.domain.todo.repository.TodoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +47,7 @@ public class TodoService {
     }
 
     public TodoResponseDto getTodo(Long todoId) {
-        Todo todo = todoRepository.findById(todoId).orElseThrow(()->new NoSuchElementException("id를 찾을 수 없습니다."));
+        Todo todo = todoRepository.findById(todoId).orElseThrow(()->new EntityNotFoundException("id를 찾을 수 없습니다."));
         return todo.to();
     }
 
@@ -55,7 +57,7 @@ public class TodoService {
         Member member = findMember(todo);
 
         if(!Objects.equals(member.getId(),requestDto.getMemberId())){
-            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
+            throw new UnauthorizedAccessException("작성자만 수정 가능합니다.");
         }
         todo.update(requestDto);
     }
@@ -66,17 +68,17 @@ public class TodoService {
         Member member = findMember(todo);
 
         if(!Objects.equals(member.getId(),requestDto.getMemberId())){
-            throw new IllegalArgumentException("작성자만 삭제 가능합니다.");
+            throw new UnauthorizedAccessException("작성자만 삭제 가능합니다.");
         }
         todoRepository.delete(todo);
     }
 
     private Todo findTodo(Long todoId) {
-        return todoRepository.findById(todoId).orElseThrow(()-> new IllegalArgumentException("선택한 일정은 존재하지 않습니다."));
+        return todoRepository.findById(todoId).orElseThrow(()-> new EntityNotFoundException("선택한 일정은 존재하지 않습니다."));
     }
 
     private Member findMember(Todo todo) {
         return memberRepository.findById(todo.getMember().getId())
-                .orElseThrow(()-> new IllegalArgumentException("작성자를 찾을 수 없습니다."));
+                .orElseThrow(()-> new EntityNotFoundException("작성자를 찾을 수 없습니다."));
     }
 }

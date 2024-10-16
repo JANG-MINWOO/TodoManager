@@ -60,4 +60,14 @@ public class CommentService {
         commentRepository.save(comment);
         return new CommentResponseDto(comment);
     }
+
+    public void deleteComment(Long commentId, Long memberId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new EntityNotFoundException("댓글이 존재하지 않습니다.")
+        );
+        if(!comment.getMember().getId().equals(memberId)) {
+            throw new UnauthorizedAccessException("작성자만 삭제할 수 있습니다.");
+        }
+        commentRepository.delete(comment);
+    }
 }
