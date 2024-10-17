@@ -1,0 +1,463 @@
+{
+	"info": {
+		"_postman_id": "a0e8824c-6075-4bee-acb3-e9ac3b01a6b0",
+		"name": "todoApp Minwoo",
+		"description": "일정관리 어플리케이션입니다. 회원제로 구현되어 있습니다.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38576841"
+	},
+	"item": [
+		{
+			"name": "회원관리",
+			"item": [
+				{
+					"name": "회원 가입 기능",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"내배캠유저\",\r\n    \"email\": \"sparta@example.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/members/resister",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"members",
+								"resister"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "회원 정보 수정",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"장유저\",\r\n    \"email\": \"kim@example.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/members/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"members",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "회원 정보 요청",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/members/loadData?memberId=1&password=1234",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"members",
+								"loadData"
+							],
+							"query": [
+								{
+									"key": "memberId",
+									"value": "1"
+								},
+								{
+									"key": "password",
+									"value": "1234"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "회원 탈퇴",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/members/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"members",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "회원가입, 로그인요청, 회원정보수정, 회원탈퇴 등의 CRUD 가 구현되어 있습니다."
+		},
+		{
+			"name": "일정관리",
+			"item": [
+				{
+					"name": "일정 생성",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"memberId\": 1,\n    \"title\": \"할 일 제목 작성\",\n    \"password\": \"1234\",\n    \"description\": \"이 할 일에 대한 설명입니다.\",\n    \"updatedAt\": \"2024-10-15T14:30:00\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/todo?memberId=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"todo"
+							],
+							"query": [
+								{
+									"key": "memberId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "선택 일정 수정",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"memberId\": 1,\n    \"title\": \"할 일 제목\",\n    \"password\": \"1234\",\n    \"description\": \"할일 내용\",\n    \"updatedAt\": \"2024-10-15T14:30:00\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/todo/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"todo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "선택 일정 삭제",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"memberId\": 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/todo/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"todo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "전체 일정 조회",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/todo?page=0&size=10",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"todo"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "일정에 대한 내용을 관리합니다."
+		},
+		{
+			"name": "댓글관리",
+			"item": [
+				{
+					"name": "댓글 생성",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"댓글 작성\",\r\n    \"todoId\": \"1\",\r\n    \"memberId\": \"1\",\r\n    \"createdAt\": \"2024-10-15T14:30:00\",\r\n    \"updatedAt\": \"2024-10-15T14:30:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/todo/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"todo",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "댓글 불러오기",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/todo/comments/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"todo",
+								"comments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "댓글 수정",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"1번째 일정에 댓글 수정\",\r\n    \"memberId\": \"1\",\r\n    \"createdAt\": \"2024-10-15T14:30:00\",\r\n    \"updatedAt\": \"2024-10-15T14:30:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/todo/comments/update/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"todo",
+								"comments",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "댓글 삭제",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/todo/comments/delete/1?memberId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"todo",
+								"comments",
+								"delete",
+								"1"
+							],
+							"query": [
+								{
+									"key": "memberId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "도전과제 기능",
+			"item": [
+				{
+					"name": "회원가입 - 도전",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"도전유저\",\r\n    \"email\": \"test@example.com\",\r\n    \"password\": \"1234\",\r\n    \"isAdmin\": false,\r\n    \"adminToken\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/members/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"members",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "로그인 기능 - 도전",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@example.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/members/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"members",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
