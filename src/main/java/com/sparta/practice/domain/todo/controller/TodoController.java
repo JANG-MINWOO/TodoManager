@@ -61,10 +61,11 @@ public class TodoController {
     @DeleteMapping("/{todoId}")
     public ResponseEntity<Void> deleteTodo(
             @PathVariable Long todoId,
-            @RequestBody TodoRequestDto requestDto
+            @RequestBody TodoRequestDto requestDto,
+            HttpServletRequest request
     ) {
-        todoService.deleteTodo(todoId, requestDto);
+        Member member = (Member) request.getAttribute("member");
+        todoService.deleteTodo(todoId, requestDto, member);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 }

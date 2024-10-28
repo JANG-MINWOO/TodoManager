@@ -3,7 +3,6 @@ package com.sparta.practice.domain.todo.service;
 import com.sparta.practice.domain.exception.UnauthorizedAccessException;
 import com.sparta.practice.domain.member.entity.Member;
 import com.sparta.practice.domain.member.entity.MemberRoleEnum;
-import com.sparta.practice.domain.member.repository.MemberRepository;
 import com.sparta.practice.domain.todo.dto.TodoMemberDto;
 import com.sparta.practice.domain.todo.dto.TodoRequestDto;
 import com.sparta.practice.domain.todo.dto.TodoResponseDto;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TodoService {
     private final TodoRepository todoRepository;
-    private final MemberRepository memberRepository;
 
     public TodoResponseDto createTodo(TodoRequestDto requestDto, Member member) {
         Todo todo = new Todo(requestDto, member);
@@ -65,22 +63,13 @@ public class TodoService {
     }
 
     @Transactional
-    public void deleteTodo(Long todoId, TodoRequestDto requestDto) {
-        Todo todo = findTodo(todoId);
-        Member member = findMember(todo);
+    public void deleteTodo(Long todoId, TodoRequestDto requestDto, Member member) {
+        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
 
-        if(!Objects.equals(member.getId(),requestDto.getMemberId())){
-            throw new UnauthorizedAccessException("작성자만 삭제 가능합니다.");
+        if(!Objects.equals(member.getId(),requestDto.getMemberId())
+        && member.getRole() != MemberRoleEnum.ADMIN){
+            throw new UnauthorizedAccessException("작성자 또는 관리자만 삭제 가능합니다.");
         }
         todoRepository.delete(todo);
-    }
-
-    private Todo findTodo(Long todoId) {
-        return todoRepository.findById(todoId).orElseThrow(()-> new EntityNotFoundException("선택한 일정은 존재하지 않습니다."));
-    }
-
-    private Member findMember(Todo todo) {
-        return memberRepository.findById(todo.getMember().getId())
-                .orElseThrow(()-> new EntityNotFoundException("작성자를 찾을 수 없습니다."));
     }
 }
