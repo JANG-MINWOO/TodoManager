@@ -1,7 +1,6 @@
 package com.sparta.practice.domain.todo.controller;
 
 import com.sparta.practice.domain.member.entity.Member;
-import com.sparta.practice.domain.member.service.MemberService;
 import com.sparta.practice.domain.todo.dto.TodoMemberDto;
 import com.sparta.practice.domain.todo.dto.TodoRequestDto;
 import com.sparta.practice.domain.todo.dto.TodoResponseDto;
@@ -20,7 +19,6 @@ import java.util.List;
 @RequestMapping("/api/todos")
 public class TodoController {
     private final TodoService todoService;
-    private final MemberService memberService;
 
     //일정 생성
     @PostMapping
