@@ -16,12 +16,6 @@ public class TodoRequestDto {
     @Size(max=11,message = "10자 이하로 작성해주세요.")
     private String title;
 
-    @NotEmpty(message = "패스워드를 입력해주세요.")
-    private String password;
-
     @NotEmpty(message = "할일을 입력해 주세요.")
     private String description;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

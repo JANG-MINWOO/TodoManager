@@ -25,7 +25,6 @@ public class Todo extends TimeStamped {
     private Long id;
 
     private String title;
-    private String password;
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,24 +40,10 @@ public class Todo extends TimeStamped {
     @JsonBackReference //역참조를 직렬화 할때 무시
     private List<Member> sharedMembers = new ArrayList<>();
 
-
-    public static Todo from(TodoRequestDto requestDto,Member member){
-        Todo todo = new Todo();
-        todo.init(requestDto,member);
-        return todo;
-    }
-
-    private void init(TodoRequestDto requestDto,Member member){
+    public Todo(TodoRequestDto requestDto, Member member) {
+        this.title = requestDto.getTitle();
+        this.description = requestDto.getDescription();
         this.member = member;
-        this.title=requestDto.getTitle();
-        this.password=requestDto.getPassword();
-        this.description=requestDto.getDescription();
-        this.createdAt=requestDto.getCreatedAt();
-        this.updatedAt=requestDto.getUpdatedAt();
-    }
-
-    public TodoResponseDto to() {
-        return new TodoResponseDto(this);
     }
 
     public void update(TodoRequestDto requestDto) {
