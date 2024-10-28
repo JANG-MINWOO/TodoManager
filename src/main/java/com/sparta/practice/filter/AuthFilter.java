@@ -50,7 +50,7 @@ public class AuthFilter implements Filter {
                 // 토큰에서 사용자 정보 가져오기
                 Claims info = jwtUtil.getUserInfoFromToken(token);
 
-                Member member = memberRepository.findByUsername(info.getSubject()).orElseThrow(() ->
+                Member member = memberRepository.findByEmail(info.getSubject()).orElseThrow(() ->
                         new NullPointerException("Not Found User")
                 );
 
