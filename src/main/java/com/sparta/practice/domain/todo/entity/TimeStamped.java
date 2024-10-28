@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class TimeStamped {
-
     @CreatedDate
     @Column(updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -22,5 +21,4 @@ public abstract class TimeStamped {
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     protected LocalDateTime updatedAt;
-
 }

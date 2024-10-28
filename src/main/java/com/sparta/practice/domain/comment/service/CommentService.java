@@ -31,7 +31,7 @@ public class CommentService {
                 ()->new EntityNotFoundException("회원이 없습니다.")
         );
 
-        Comment comment = new Comment(requestDto.getContent(), todo,member);
+        Comment comment = new Comment(requestDto.getContent(), todo, member);
         commentRepository.save(comment);
 
         return new CommentResponseDto(comment);
