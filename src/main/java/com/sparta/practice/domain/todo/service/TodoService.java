@@ -2,6 +2,7 @@ package com.sparta.practice.domain.todo.service;
 
 import com.sparta.practice.domain.exception.UnauthorizedAccessException;
 import com.sparta.practice.domain.member.entity.Member;
+import com.sparta.practice.domain.member.entity.MemberRoleEnum;
 import com.sparta.practice.domain.member.repository.MemberRepository;
 import com.sparta.practice.domain.todo.dto.TodoMemberDto;
 import com.sparta.practice.domain.todo.dto.TodoRequestDto;
@@ -26,8 +27,9 @@ public class TodoService {
     private final MemberRepository memberRepository;
 
     public TodoResponseDto createTodo(TodoRequestDto requestDto, Member member) {
-        Todo todo = todoRepository.save(Todo.from(requestDto,member));
-        return todo.to();
+        Todo todo = new Todo(requestDto, member);
+        todoRepository.save(todo);
+        return new TodoResponseDto(todo);
     }
 
     public List<TodoMemberDto> getTodoListWithPaging(int page, int size){
@@ -47,18 +49,19 @@ public class TodoService {
 
     public TodoResponseDto getTodo(Long todoId) {
         Todo todo = todoRepository.findById(todoId).orElseThrow(()->new EntityNotFoundException("id를 찾을 수 없습니다."));
-        return todo.to();
+        return new TodoResponseDto(todo);
     }
 
     @Transactional
-    public void updateTodo(Long todoId, TodoRequestDto requestDto) {
-        Todo todo = findTodo(todoId); //아래의 일정 존재유무 메서드
-        Member member = findMember(todo);
+    public TodoResponseDto updateTodo(Long todoId, TodoRequestDto requestDto, Member member) {
+        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+        //관리자 권한이 있으면 수정가능하게 추가
+        if(!Objects.equals(member.getId(),requestDto.getMemberId())
+        && member.getRole() != MemberRoleEnum.ADMIN) throw new UnauthorizedAccessException("작성자 또는 관리자만 수정 가능합니다.");
 
-        if(!Objects.equals(member.getId(),requestDto.getMemberId())){
-            throw new UnauthorizedAccessException("작성자만 수정 가능합니다.");
-        }
         todo.update(requestDto);
+        todoRepository.saveAndFlush(todo);
+        return new TodoResponseDto(todo);
     }
 
     @Transactional

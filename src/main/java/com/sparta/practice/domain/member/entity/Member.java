@@ -36,7 +36,7 @@ public class Member extends TimeStamped {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonManagedReference //직렬화 할때 사용
-    private List<Todo> todos = new ArrayList<>();
+    private List<Todo> todo = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
