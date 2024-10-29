@@ -70,13 +70,12 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponseDto updateMember(Long memberId, MemberRequestDto requestDto, Member member) {
+    public void updateMember(Long memberId, MemberRequestDto requestDto, Member member) {
         Member updatedMember = memberRepository.findById(memberId).orElseThrow(()-> new EntityNotFoundException("회원을 찾을 수 없습니다."));
         if(!member.getId().equals(updatedMember.getId())) throw new UnauthorizedAccessException("수정할 권한이 없습니다.");
 
         String password = passwordEncoder.encode(requestDto.getPassword());
         updatedMember.update(password);
-        return new MemberResponseDto(member);
     }
 
     @Transactional

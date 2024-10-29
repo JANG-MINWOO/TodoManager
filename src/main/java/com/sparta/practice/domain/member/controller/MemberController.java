@@ -60,14 +60,14 @@ public class MemberController {
     //회원 정보 수정
     @Transactional
     @PutMapping("/{memberId}")
-    public ResponseEntity<MemberResponseDto> updateMember(
+    public ResponseEntity<String> updateMember(
             @PathVariable Long memberId,
             @RequestBody @Valid MemberRequestDto requestDto,
             HttpServletRequest request
     ) {
         Member member = (Member) request.getAttribute("member");
-        MemberResponseDto updatedMember = memberService.updateMember(memberId, requestDto, member);
-        return ResponseEntity.ok(updatedMember);
+        memberService.updateMember(memberId, requestDto, member);
+        return ResponseEntity.status(HttpStatus.OK).body("수정이 완료되었습니다.");
     }
 
     //회원탈퇴
