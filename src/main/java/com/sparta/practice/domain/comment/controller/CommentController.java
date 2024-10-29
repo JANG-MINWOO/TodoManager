@@ -17,26 +17,30 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
 
+    //댓글생성
     @PostMapping
     public ResponseEntity<CommentResponseDto> createComment(@RequestBody @Valid CommentRequestDto requestDto){
         CommentResponseDto commentDto = commentService.createComment(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(commentDto);
     }
 
+    //댓글 조회
     @GetMapping("/{todoId}")
     public ResponseEntity<List<CommentResponseDto>> getCommentsByTodoId(@PathVariable Long todoId){
         List<CommentResponseDto> comments = commentService.getCommentByTodoId(todoId);
         return ResponseEntity.ok(comments);
     }
 
-    @PutMapping("/update/{commentId}")
+    //댓글 수정
+    @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long commentId, @RequestBody @Valid CommentRequestDto requestDto){
         CommentResponseDto commentDto = commentService.updateComment(commentId,requestDto);
         return ResponseEntity.ok(commentDto);
     }
 
-    @DeleteMapping("/delete/{commentId}")
-    public ResponseEntity<Void> deleteComment (@PathVariable Long commentId, @RequestParam Long memberId){
+    //댓글 삭제
+    @DeleteMapping("/{commentId}/{memberId}")
+    public ResponseEntity<Void> deleteComment (@PathVariable Long commentId, @PathVariable Long memberId){
         commentService.deleteComment(commentId,memberId);
         return ResponseEntity.noContent().build();
     }
