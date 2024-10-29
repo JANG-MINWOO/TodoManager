@@ -72,9 +72,12 @@ public class MemberController {
 
     //회원탈퇴
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<Void> deleteMember(@PathVariable Long memberId) {
-        memberService.deleteMember(memberId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteMember(
+            @PathVariable Long memberId,
+            HttpServletRequest request) {
+        Member member = (Member) request.getAttribute("member");
+        memberService.deleteMember(memberId,member);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("회원탈퇴 완료");
     }
 
 }
