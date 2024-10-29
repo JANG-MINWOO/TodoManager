@@ -34,9 +34,9 @@ public class Member extends TimeStamped {
     @Enumerated(value = EnumType.STRING)
     private MemberRoleEnum role;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "member",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonManagedReference //직렬화 할때 사용
-    private List<Todo> todo = new ArrayList<>();
+    private List<Todo> todos = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -47,12 +47,6 @@ public class Member extends TimeStamped {
     @JsonManagedReference //직렬화 할때 사용
     private List<Todo> sharedTodos = new ArrayList<>();
 
-    public Member(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
     public Member(String username, String password, String email, MemberRoleEnum role) {
         this.username = username;
         this.password = password;
@@ -60,9 +54,7 @@ public class Member extends TimeStamped {
         this.role = role;
     }
 
-    public void update(MemberRequestDto requestDto) {
-        this.username = requestDto.getUsername();
-        this.email = requestDto.getEmail();
-        this.password = requestDto.getPassword();
+    public void update(String password) {
+        this.password = password;
     }
 }

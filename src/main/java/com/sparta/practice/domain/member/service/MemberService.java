@@ -1,5 +1,6 @@
 package com.sparta.practice.domain.member.service;
 
+import com.sparta.practice.domain.exception.UnauthorizedAccessException;
 import com.sparta.practice.domain.jwt.JwtUtil;
 import com.sparta.practice.domain.member.dto.LoginRequestDto;
 import com.sparta.practice.domain.member.dto.MemberRequestDto;
@@ -29,30 +30,23 @@ public class MemberService {
     // ADMIN 가입시, ADMIN 가입 유무를 TRUE 로 체크하고 아래의 토큰을 입력하여야 가입가능
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
-    public Member findById(Long memberId){
-        return memberRepository.findById(memberId).orElse(null);
-    }
-
-    public Member registerMember(String username, String email, String password) {
-        Member member = new Member(username, email, password);
-        return memberRepository.save(member);
-    }
-
-    public Optional<Member> loadMemberData(Long memberId, String password) {
-        Optional<Member> member = memberRepository.findById(memberId);
-
-        if(member.isPresent()&&member.get().getPassword().equals(password)) {
-            return member;
-        }
-        return Optional.empty();
+    public MemberResponseDto loadMemberData(Long memberId, Member loginMember) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new EntityNotFoundException("검색한 회원을 찾을 수 없습니다.")
+        );
+        return new MemberResponseDto(member);
     }
 
     @Transactional
-    public MemberResponseDto updateMember(Long memberId, MemberRequestDto requestDto) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
+    public MemberResponseDto updateMember(Long memberId, MemberRequestDto requestDto, Member member) {
+        Member updatedMember = memberRepository.findById(memberId).orElseThrow(
                 ()-> new EntityNotFoundException("회원을 찾을 수 없습니다.")
         );
-        member.update(requestDto);
+        if(!member.getId().equals(updatedMember.getId())) {
+            throw new UnauthorizedAccessException("수정할 권한이 없습니다.");
+        }
+        String password = passwordEncoder.encode(requestDto.getPassword());
+        updatedMember.update(password);
         return new MemberResponseDto(member);
     }
 
