@@ -32,7 +32,7 @@ public class AuthFilter implements Filter {
                 (url.startsWith("/api/members/login") || url.startsWith("/api/members/signup"))
         ) {
             // 회원가입, 로그인 관련 API 는 인증 필요없이 요청 진행
-            chain.doFilter(request, response); // 다음 Filter 로 이동
+            chain.doFilter(request, response); // 다음 Filter 로 이동 - 이부분에서 Controller 로 이동한다.
         } else {
             // 나머지 API 요청은 인증 처리 진행
             // 토큰 확인
